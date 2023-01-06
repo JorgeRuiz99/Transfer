@@ -1,5 +1,6 @@
 import { Box, Button, Chip } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import user from "../../mock/user";
 import {
   ContainerButtonStyles,
@@ -10,10 +11,10 @@ import {
 } from "./Navbar-styles";
 
 const navOptions = [
-  { label: "INVOICES" },
-  { label: "NOTIFICATIONS" },
-  { label: "ALERTS" },
-  { label: "SETTINGS" },
+  { label: "INVOICES", path: "/invoices" },
+  { label: "NOTIFICATIONS", path: "/invoices" },
+  { label: "ALERTS", path: "/invoices" },
+  { label: "SETTINGS", path: "/invoices" },
 ];
 
 interface Props {
@@ -22,6 +23,7 @@ interface Props {
 
 const Navbar = ({ children }: Props) => {
   const [selectedNavOptionIndex, setSelectedNavOptionIndex] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <Box sx={ContainerBoxStyles}>
@@ -46,9 +48,13 @@ const Navbar = ({ children }: Props) => {
         <Box sx={ContainerButtonStyles}>
           {navOptions.map((navOption, index) => (
             <Button
+              key={index}
               variant={selectedNavOptionIndex === index ? "contained" : "text"}
               sx={NavButtonStyle}
-              onClick={() => setSelectedNavOptionIndex(index)}
+              onClick={() => {
+                setSelectedNavOptionIndex(index);
+                navigate(navOption.path);
+              }}
             >
               {navOption.label}
             </Button>
